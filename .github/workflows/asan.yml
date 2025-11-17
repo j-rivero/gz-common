@@ -1,0 +1,24 @@
+name: Ubuntu ASAN CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - 'ign-common[0-9]'
+      - 'gz-common[0-9]'
+      - 'main'
+
+jobs:
+  noble-asan:
+    runs-on: ubuntu-latest
+    name: Ubuntu Noble ASAN
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Compile and test with AddressSanitizer
+        id: ci
+        uses: gazebo-tooling/action-gz-ci@noble
+        with:
+          cmake-args: '-DGZ_SANITIZER=Address -DCMAKE_BUILD_TYPE=Debug'
+        env:
+          ASAN_OPTIONS: 'check_initialization_order=true:strict_init_order=true:detect_stack_use_after_return=true'
