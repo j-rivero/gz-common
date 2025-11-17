@@ -182,7 +182,8 @@ namespace gz
 
       GZ_UTILS_WARN_IGNORE__DLL_INTERFACE_MISSING
       /// \brief A custom prefix. See SetPrefix().
-      private: static std::string customPrefix;
+      /// This is a reference to avoid static initialization order issues.
+      private: static std::string& customPrefix;
 
       /// \brief Stores the full path of the directory where all the log files
       /// are stored.

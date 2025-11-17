@@ -60,9 +60,17 @@ std::ostream &LogMessage::stream()
   return this->ss;
 }
 
+// Helper function to get custom prefix using NeverDestroyed pattern
+// to avoid static initialization order fiasco
+static std::string& GetCustomPrefix()
+{
+  static gz::utils::NeverDestroyed<std::string> prefix{""};
+  return prefix.Access();
+}
+
 bool Console::initialized = false;
 int Console::verbosity = 1;
-std::string Console::customPrefix = ""; // NOLINT(*)
+std::string& Console::customPrefix = GetCustomPrefix();
 
 /////////////////////////////////////////////////
 Console::Console(const std::string &_loggerName)
